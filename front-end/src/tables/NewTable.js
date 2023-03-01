@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { createTable } from "../utils/api";
+import ErrorAlert from "../layout/ErrorAlert";
 
 function NewTable() {
   const initialFormData = {
@@ -42,6 +43,7 @@ function NewTable() {
   return (
     <div>
       <h1>New Table</h1>
+      <ErrorAlert error={error} />
       <form onSubmit={handleSubmit}>
         <label htmlFor="table_name">Table Name</label>
         <input onChange={handleChange} name="table_name" />

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { listReservations, listTables, finishTable } from "../utils/api";
-import  RenderReservations  from "../reservations/RenderReservations";
+import RenderReservations from "../reservations/RenderReservations";
 import ErrorAlert from "../layout/ErrorAlert";
 
 /**
@@ -16,11 +16,27 @@ function Dashboard({ date }) {
   const [tables, setTables] = useState([]);
   const history = useHistory();
   const dateParameter = new URLSearchParams(window.location.search).get("date");
-  
-  useEffect( () => {   
-    loadDashboard();
-  }, [date,dateParameter]);
 
+  useEffect(() => {
+    const abortController = new AbortController();
+    async function loadDashboard() {
+      setReservationsError(null);
+      try {
+        const reservationsFromAPI = await listReservations(
+          { date },
+          abortController.signal
+        );
+        const tablesFromAPI = await listTables(abortController.signal);
+
+        setReservations(reservationsFromAPI);
+        setTables(tablesFromAPI);
+      } catch (err) {
+        setReservationsError(err);
+      }
+    }
+    loadDashboard();
+    return () => abortController.abort();
+  }, [date, dateParameter]);
   async function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
@@ -38,6 +54,7 @@ function Dashboard({ date }) {
     }
     return () => abortController.abort();
   }
+
   function handleNext() {
     const nextDate = new Date(date);
     nextDate.setDate(nextDate.getDate() + 1);
@@ -57,8 +74,6 @@ function Dashboard({ date }) {
     const todayString = today.toISOString().split("T")[0];
     history.push(`/dashboard?date=${todayString}`);
   }
-
-  
 
   const handleFinish = async (event) => {
     if (
@@ -100,7 +115,10 @@ function Dashboard({ date }) {
           <h4 className="mb-0">Reservations for date {date}</h4>
         </div>
         <ErrorAlert error={reservationsError} />
-        <RenderReservations reservations={reservations} loadDashboard={loadDashboard} />
+        <RenderReservations
+          reservations={reservations}
+          loadDashboard={loadDashboard}
+        />
         <button onClick={handleNext}>Next</button>
         <button onClick={handlePrevious}>Previous</button>
         <button onClick={handleToday}>Today</button>

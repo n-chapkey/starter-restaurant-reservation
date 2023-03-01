@@ -18,7 +18,6 @@ function SeatTable() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(event.target.table_id.value);
     const abortController = new AbortController();
     try {
       await seatReservation(

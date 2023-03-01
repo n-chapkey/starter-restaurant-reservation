@@ -14,18 +14,8 @@ function EditReservation() {
 
   useEffect(() => {
     loadReservation(reservation_id);
-  }, []);
+  }, [reservation_id]);
 
-//   useEffect(() => {
-//     if (reservation?.reservation_id) {
-//       return;
-//     } else {
-//       console.log(reservation.reservation_date);
-//       reservation.reservation_date = formatReservationDate(
-//         reservation.reservation_date
-//       );
-//     }
-//   }, [reservation]);
 
   async function loadReservation(reservation_id) {
     const abortController = new AbortController();
@@ -64,7 +54,6 @@ function EditReservation() {
     event.preventDefault();
     const abortController = new AbortController();
 
-    console.log(reservation.reservation_date);
     try {
       await updateReservation(
         reservation_id,
@@ -80,6 +69,7 @@ function EditReservation() {
   return (
     <div>
       <h1>Edit Reservation</h1>
+      <ErrorAlert error={error} />
       <FormReservation
         handleChange={handleChange}
         handleSubmit={handleSubmit}

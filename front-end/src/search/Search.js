@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
 import { searchReservation } from "../utils/api";
 import RenderReservations from "../reservations/RenderReservations";
-
+import ErrorAlert from "../layout/ErrorAlert";
 function Search() {
   const [error, setError] = useState(null);
   const [reservations, setReservations] = useState([]);
@@ -24,6 +23,7 @@ function Search() {
   return (
     <div>
       <h1>Search</h1>
+      <ErrorAlert error={error} />
       <form onSubmit={handleSubmit}>
         <input
           type="text"

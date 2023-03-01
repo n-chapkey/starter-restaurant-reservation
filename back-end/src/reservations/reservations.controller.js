@@ -284,7 +284,7 @@ module.exports = {
     asyncErrorBoundary(validateStatusBookedPost),
     asyncErrorBoundary(create),
   ],
-  read: [validateReservationId, asyncErrorBoundary(read)],
+  read: [asyncErrorBoundary(validateReservationId), asyncErrorBoundary(read)],
   update: [
     asyncErrorBoundary(validateReservationId),
     asyncErrorBoundary(validateNotCurrentlyFinished),

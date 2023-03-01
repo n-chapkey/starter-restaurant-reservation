@@ -13,12 +13,18 @@ function RenderReservations({ reservations, loadDashboard }) {
       const abortController = new AbortController();
       const status = "cancelled";
       const data = { status };
-      await updateReservationStatus(
-        reservation_id,
-        data,
-        abortController.signal
-      );
-      loadDashboard();
+      try {
+        await updateReservationStatus(
+          reservation_id,
+          data,
+          abortController.signal
+        );
+        loadDashboard();
+      } catch (error) {
+        console.log(error);
+      }        
+
+      return () => abortController.abort();
     }
   };
 

@@ -26,7 +26,6 @@ function NewTable() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formData);
     const abortController = new AbortController();
 
     createTable(formData, abortController.signal)

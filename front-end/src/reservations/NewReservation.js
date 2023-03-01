@@ -31,7 +31,6 @@ function NewReservation() {
       });
     }
 
-    console.log(formData.reservation_date);
   };
 
   function validateDate(date) {

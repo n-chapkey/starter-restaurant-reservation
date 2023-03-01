@@ -10,7 +10,6 @@ function hasProperties(...properties) {
             throw error;
           }
         });
-        //console.log("************",res.locals);
         return next();
       } catch (error) {
         return next(error);

@@ -46,11 +46,6 @@ async function read(req, res, next) {
 
 async function update(req, res, next) {
   const { reservation_id } = req.params;
-  console.log(req.body.data);
-  // if (req.body.data.status === "cancelled") {
-  //   const data = await service.update(reservation_id, req.body.data);
-  //   return res.status(200).json({ data });
-  // }
   const data = await service.update(reservation_id, req.body.data);
   
   return res.json({ data });
@@ -58,7 +53,6 @@ async function update(req, res, next) {
 
 async function updateReservation(req, res, next) {
   const { reservation_id } = req.params;
-  console.log(req.body.data, "req.body.data", reservation_id, "reservation_id")
   const data = await service.updateReservation(reservation_id, req.body.data);
   return res.json({ data });
 }

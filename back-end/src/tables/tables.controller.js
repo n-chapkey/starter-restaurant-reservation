@@ -158,7 +158,7 @@ function asyncErrorBoundary(delegate, defaultStatus) {
 }
 
 module.exports = {
-    asyncErrorBoundary(list),
+    list : [asyncErrorBoundary(list)],
   create: [
     hasProperties(...requiredProperties),
     validateTableName,

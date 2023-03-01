@@ -30,6 +30,7 @@ function Search() {
           name="mobile_number"
           id="mobile_number"
           placeholder="Enter a customer's phone number"
+          pattern="[0-9 \-]+"
         />
         <button type="submit">Find</button>
       </form>

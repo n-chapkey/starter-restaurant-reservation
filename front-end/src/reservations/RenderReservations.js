@@ -20,7 +20,7 @@ function RenderReservations({ reservations, loadDashboard }) {
         );
         loadDashboard();
       } catch (error) {
-        console.log(error);
+        console.log(error); //did this break the test?
       }        
 
       return () => abortController.abort();

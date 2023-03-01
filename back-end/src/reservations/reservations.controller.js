@@ -47,7 +47,7 @@ async function read(req, res, next) {
 async function update(req, res, next) {
   const { reservation_id } = req.params;
   const data = await service.update(reservation_id, req.body.data);
-  
+
   return res.json({ data });
 }
 
@@ -111,7 +111,6 @@ function validateDate(date) {
         }
       }
     }
-
     //validate reservation is not on a Tuesday
     if (reservationDate.getDay() === 2) {
       const error = new Error(`The restaurant is closed on Tuesdays.`);
@@ -125,7 +124,12 @@ function validateTime(time) {
   let time_regex = /^(2[0-3]|[01][0-9]):[0-5][0-9]$/;
   if (time_regex.test(time)) {
     const [hour, minute] = time.split(":");
-    if ((hour == 10 && minute < 30) || (hour == 21 && minute > 30) || hour < 10 || hour > 21) {
+    if (
+      (hour == 10 && minute < 30) ||
+      (hour == 21 && minute > 30) ||
+      hour < 10 ||
+      hour > 21
+    ) {
       const error = new Error(
         `reservation_time '${time}' is outside of restaurant hours. Reservations must be made between 10:30 and 21:30.`
       );
@@ -211,9 +215,9 @@ async function validateNotCurrentlyFinished(req, res, next) {
   return next();
 }
 
-function validateUpdateProperties(req, res, next){
+function validateUpdateProperties(req, res, next) {
   const { reservation_date, reservation_time, people, status } = req.body.data;
-  
+
   let date_regex = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
   const dateTruthy = date_regex.test(reservation_date);
   let people_regex = /^[0-9]+$/;
@@ -221,14 +225,13 @@ function validateUpdateProperties(req, res, next){
 
   let time_regex = /^(2[0-3]|[01][0-9]):[0-5][0-9]$/;
   const timeTruthy = time_regex.test(reservation_time);
-  
-  if (!(typeof people == "number")){
-    peopleTruthy = false
-  }else{
+
+  if (!(typeof people == "number")) {
+    peopleTruthy = false;
+  } else {
     peopleTruthy = people_regex.test(people);
   }
 
-  
   try {
     if (!dateTruthy) {
       const error = new Error(
@@ -288,9 +291,10 @@ module.exports = {
   ],
   updateReservation: [
     asyncErrorBoundary(validateReservationId),
-     asyncErrorBoundary(validateNotCurrentlyFinished),
-     hasProperties(...requiredProperties),
-     validateUpdateProperties,
+    asyncErrorBoundary(validateNotCurrentlyFinished),
+    hasProperties(...requiredProperties),
+    validateProperties,
+    validateUpdateProperties,
     asyncErrorBoundary(updateReservation),
   ],
 };

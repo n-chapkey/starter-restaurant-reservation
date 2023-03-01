@@ -31,6 +31,7 @@ function FormReservation({ handleSubmit, handleChange, initialData }) {
         onChange={handleChange}
         name="mobile_number"
         id="mobile_number"
+        pattern="[0-9 \-]+"
         defaultValue={initialData.mobile_number}
       />
       <label htmlFor="reservation_date">Reservation Date</label>

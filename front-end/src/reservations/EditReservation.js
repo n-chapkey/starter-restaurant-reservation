@@ -13,26 +13,23 @@ function EditReservation() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const abortController = new AbortController();
+    async function loadReservation(reservation_id) {
+      try {
+        const response = await readReservation(
+          reservation_id,
+          abortController.signal
+        );
+        setReservation(formatReservationDate(response));
+      } catch (error) {
+        setError(error);
+      }
+    }
     loadReservation(reservation_id);
+    return () => abortController.abort();
   }, [reservation_id]);
 
-
-  async function loadReservation(reservation_id) {
-    const abortController = new AbortController();
-    try {
-      const response = await readReservation(
-        reservation_id,
-        abortController.signal
-      );
-      setReservation(formatReservationDate(response));
-    } catch (error) {
-      return () => abortController.abort();
-    }
-  }
-
   function formatReservationForm(reservation) {
-    //setReservation(formatReservationDate(reservation));
-
     return {
       first_name: reservation.first_name,
       last_name: reservation.last_name,
